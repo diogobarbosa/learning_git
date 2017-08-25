@@ -1,0 +1,180 @@
+
+Durante o ciclo básico do Git, nós interagimos com 3 estágios diferentes do repositório.
+1. Working directory, é o sistema de arquivos atual, onde criamos e realizamos alterações nos arquivos a serem monitorados. Representa o estado atual dos arquivos no repositório.
+2. Staging Area / index, é o estágio transitório onde ficam os arquivos e alterações que serão persistidos no repositório. Representa uma visão premilinar das modificações que queremos persistir em nosso repositório.
+3. HEAD, é o ultimo estágio do Git onde é persistidos as informações que estavam na Staging area.
+
+
+Clonar um repositório:
+Ex.
+git clone https://github.com/jcfonsecagit/repositorio.git
+
+
+Verifica as tags presentes no projeto:
+Ex.
+git tag
+
+A opção checkout altera seu repositório local fazendo com que seus arquivos fiquem no mesmo estado em que estavam quando a tag v0.1 foram criados!
+Ex.
+git checkout v0.1
+
+
+Para ver a diferença entre dois pontos do projeto, no caso duas versões, usamos a opção diff do git.
+Ex.
+git diff v0.1 v0.2
+
+
+Inicializa o git para controlar as alterações em uma pasta qualquer e torná-la um repositório.
+Ex.
+git init
+
+
+Exibe os arquivos que estão sobre controle do Git.
+Ex.
+git ls-files
+
+Exibe os arquivos em conflito.
+git ls-files -u
+
+O comando git status exibe um resumo dos arquivos modificados, adicionados ou excluídos de seu working directory, em comparação com o HEAD.
+Ex.
+git status
+
+Adiciona arquivos Untrackeds ou arquivos alterados na lista do Git para serem comitados e monitorados.
+O comando git add pode ser executado de modo interativo com a opção -i
+Ex. 
+git add index.html
+git add arquivo1 arquivo2
+git add caminhoDeUmDiretorio
+git add .
+
+Untracked files: Arquivos que ainda não estão sendo monitorados pelo Git.
+
+
+
+Configura as informações sobre o usuário:
+Obs. Aceita a opção --global para configurar para o computador inteiro aó invés de só para esse repositório.
+Ex.
+git config user.name "Diogo de Almeida Barbosa"
+git config user.email "diogoalmeidabarbosa@gmail.com"
+
+
+Realiza o commit das nossas alterações para o repositório:
+A opção -a inclui imediatamente no commit todos os arquivos modificados ou removidos do Working directory, porém, ela não adiciona os arquivos novos.
+Ex.
+git commit -m "Início do projeto"
+git commit -a -m "Início do projeto"
+
+
+
+Possíveis estados de um arquivo dentro de um repositório git.
+untracked, tracked e modified
+
+O comando git log serve para mostra as informações de commits já realizados, como o autor, a data e hora e a mensagem de commit utilizada.
+Ex.
+git log
+
+O comando git whatchanged tem a mesma funcionalidade do git log, porém mostra informações mais detalhadas como arquivos alterados, ou até mesmo, quais linhas foram alteradas em cada arquivo.
+Ex.
+git whatchanged
+git whatchanged -p 
+
+
+Git remote, informa ou adiciona algum repositório remoto.
+Obs. Geralmente ao repositório remoto, colocamos o nome default de origin (Origem), por que é geralmente a partir dele que recebemos o nosso código.
+Ex.
+git remote
+git remote add origin https://github.com/diogobarbosa/learning_git.git
+
+
+O comando Git push, serve para mandar nossas alterações ao nosso repositório remoto, ou criar um novo branch no repisório remoto.
+Ex.
+git push origin master
+git push origin novoBranch
+
+Para que a sincronização seja realizada e o desenvolvedor tenha em seu computador as novas versões dos arquivos, basta que ele execute o comando git pull origin master
+Ex.
+git pull origin master
+git pull origin novaBranch
+
+
+Porém, toda vez que atualizarmos tanto o nosso projeto local quanto o projeto remoto, precisaremos indicar qual o repositório e o nome da branch que a nossa branch local se refere no remoto, isto é, precisaremos digitar git pull origin novaBranch e git push origin novaBranch para atualizar os repositórios locais e remotos, respectivamente.
+Para evitar tal trabalho, podemos indicar o caminho (track) da branch remota para a nossa branch local. Isso pode ser feito no instante em que criamos a branch remota através da opção "-u". No nosso caso, temos:
+git push -u origin novaBranch
+
+
+O comando git clone realiza a cópia de um repositório remoto.
+Ao clonar um repositório, não precisamos adicionar o repositório remoto através do comando git remote add, pois tudo já é feito pelo comando git clone, dando um alias "origin" para o repositório.
+Ex.
+git clone https://github.com/diogobarbosa/learning_git
+git clone https://github.com/diogobarbosa/learning_git nomeRepositorioLocal
+
+
+O comando git branch exibe as branchs do projeto, as branchs remotas, ou cria uma branch nova.
+Ex.
+git branch
+git branch -a
+git branch -r
+git branch nomeNovaBranch
+
+Para criar uma branch local realizando o tracking com uma branch remota para utilizar apenas git pull ao invés de git pull origin novaBranch.
+Ex.
+git branch -t design origin/novaBranch
+
+O comando git checkout, altera a branch que estamos trabalhando no momento, ou com o atalho -b, cria e faz o checkout da branch, ou baixa a cópia de um branch remoto.
+Ex. 
+git checkout nomeBranch
+git checkout -b novabranch 
+git checkout -b novabranch origin/branchorigem 
+
+
+Descarta as alterações feitas no Working directory
+Ex.
+git checkout -- ./*
+
+
+
+Cria uma branch local com o mesmo nome da branch remota, muda para essa nova branch criada, realiza o track entre a branch local e remota
+Ex.
+git checkout -t origin/novaBranch
+
+Deletando uma Branch em nosso repositório
+git branch -d nomeBranch
+git branch -D nomeBranch (Força, caso a branch não esteja mergeada)
+
+Deletando uma Branch remota
+git branch origin :design
+git push origin :design
+
+
+Este comando verifica todas as atualizações que foram realizadas no repositório remoto.
+Ex.
+git fetch origin
+
+
+O comando git mergetool --tool-help mostra no console uma lista de programas possíveis de ser utilizados. 
+Dessa lista, pode-se escolher um, instalar no seu computador e utilizar através do comando git mergetool -t nome_do_programa.
+
+
+Boas práticas ao trabalhar com uma equipe de desenvolvedores:
+
+1. O processo de merge, quando acontece, pode confundir muitos desenvolvedores a respeito dessa referência. Outro problema é a geração de mensagens de merge, poluindo o nosso log.
+Justamente para evitar tais situações, é uma boa prática sempre trabalhar em uma branch local que não seja a master.
+
+
+
+O comando git merge move os commits de uma determinada branch para a branch atual.
+Ex. 
+git merge novaBranch
+
+
+GIT REBASE
+O git rebase é uma forma de se fazer o merge, onde utilizamos de uma base para adicionar os commits de uma determinada branch. Ou seja, pegamos todos os commits de uma outra branch, trazemos para a nossa a partir do ponto de separação, e todos nossos commits feitos após esse ponto de separação, são colocados após os commits trazidos pelo rebase.
+Isso faz com que o log não tenha mensagens de merges automáticos, nosso commit é considerado um "commit" após os commits dos rebases, e não um merge automático.
+Ex. git rebase master minhaBranch (Utiliza o master como base, trazendo os commits dele para o 'minhaBranch', e adicionando os commits da minhaBranch que não estavam na base no final.)
+
+
+Opções de rebase:
+--continue deve ser utilizado após a resolução manual de conflitos; 
+--skip faz com que suas alterações sejam descartadas; 
+--abort volta atrás em todo o processo de rebase
